@@ -1,5 +1,7 @@
 package adocaopets.models;
 
+import adocaopets.dtos.tutor.AtualizacaoTutorDto;
+import adocaopets.dtos.tutor.CadastroTutorDto;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -35,4 +37,16 @@ public class Tutor {
 
     @OneToMany(mappedBy = "tutor")
     private List<Adocao> adocoes;
+
+    public Tutor(CadastroTutorDto cadastroTutorDto) {
+        this.nome = cadastroTutorDto.nome();
+        this.telefone = cadastroTutorDto.telefone();
+        this.email = cadastroTutorDto.email();
+    }
+
+    public void atualizarDados(AtualizacaoTutorDto atualizacaoTutorDto) {
+        this.nome = atualizacaoTutorDto.nome();
+        this.telefone = atualizacaoTutorDto.telefone();
+        this.email = atualizacaoTutorDto.email();
+    }
 }

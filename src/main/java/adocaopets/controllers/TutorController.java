@@ -1,7 +1,11 @@
 package adocaopets.controllers;
 
+import adocaopets.dtos.tutor.AtualizacaoTutorDto;
+import adocaopets.dtos.tutor.CadastroTutorDto;
+import adocaopets.exceptions.ValidacaoException;
 import adocaopets.models.Tutor;
 import adocaopets.repositories.TutorRepository;
+import adocaopets.services.TutorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,26 +17,27 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class TutorController {
 
-    private final TutorRepository tutorRepository;
+    private final TutorService tutorService;
 
     @PostMapping
     @Transactional
-    public ResponseEntity<String> cadastrar(@RequestBody @Valid Tutor tutor) {
-        boolean telefoneJaCadastrado = tutorRepository.existsByTelefone(tutor.getTelefone());
-        boolean emailJaCadastrado = tutorRepository.existsByEmail(tutor.getEmail());
-
-        if (telefoneJaCadastrado || emailJaCadastrado) {
-            return ResponseEntity.badRequest().body("Dados já cadastrados para outro tutor!");
-        } else {
-            tutorRepository.save(tutor);
+    public ResponseEntity<String> cadastrar(@RequestBody @Valid CadastroTutorDto cadastroTutorDto) {
+        try {
+            tutorService.cadastrar(cadastroTutorDto);
             return ResponseEntity.ok().build();
+        } catch (ValidacaoException exception) {
+            return ResponseEntity.badRequest().body(exception.getMessage());
         }
     }
 
     @PutMapping
     @Transactional
-    public ResponseEntity<String> atualizar(@RequestBody @Valid Tutor tutor) {
-        tutorRepository.save(tutor);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> atualizar(@RequestBody @Valid AtualizacaoTutorDto atualizacaoTutorDto) {
+        try {
+            tutorService.atualizar(atualizacaoTutorDto);
+            return ResponseEntity.ok().build();
+        } catch (ValidacaoException exception) {
+            return ResponseEntity.badRequest().body(exception.getMessage());
+        }
     }
 }

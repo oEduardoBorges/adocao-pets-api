@@ -37,4 +37,21 @@ public class Adocao {
     private StatusAdocao status;
 
     private String justificativaStatus;
+
+    public Adocao(Tutor tutor, Pet pet, String motivo) {
+        this.tutor = tutor;
+        this.pet = pet;
+        this.motivo = motivo;
+        this.status = StatusAdocao.AGUARDANDO_AVALIACAO;
+        this.data = LocalDateTime.now();
+    }
+
+    public void marcarComAprovada() {
+        this.status = StatusAdocao.APROVADO;
+    }
+
+    public void marcarComoReprovada(String justificativa) {
+        this.status = StatusAdocao.APROVADO;
+        this.justificativaStatus = justificativa;
+    }
 }

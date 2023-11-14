@@ -33,6 +33,6 @@ public class Tutor {
     @Email
     private String email;
 
-    @OneToMany(mappedBy = "tutor", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "tutor")
     private List<Adocao> adocoes;
 }

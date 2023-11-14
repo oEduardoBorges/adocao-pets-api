@@ -1,25 +1,16 @@
 package adocaopets.controllers;
 
-import adocaopets.dtos.AprovacaoAdocaoDto;
-import adocaopets.dtos.ReprovacaoAdocaoDto;
-import adocaopets.dtos.SolicitacaoAdocaoDto;
-import adocaopets.models.Adocao;
-import adocaopets.models.enums.StatusAdocao;
-import adocaopets.repositories.AdocaoRepository;
+import adocaopets.dtos.adocao.AprovacaoAdocaoDto;
+import adocaopets.dtos.adocao.ReprovacaoAdocaoDto;
+import adocaopets.dtos.adocao.SolicitacaoAdocaoDto;
 import adocaopets.services.AdocaoService;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @RestController
 @RequestMapping("/adocoes")

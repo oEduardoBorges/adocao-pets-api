@@ -1,4 +1,4 @@
-package adocaopets.dtos;
+package adocaopets.dtos.adocao;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -1,22 +1,18 @@
 package adocaopets.services;
 
-import adocaopets.dtos.AprovacaoAdocaoDto;
-import adocaopets.dtos.ReprovacaoAdocaoDto;
-import adocaopets.dtos.SolicitacaoAdocaoDto;
-import adocaopets.exceptions.ValidacaoException;
+import adocaopets.dtos.adocao.AprovacaoAdocaoDto;
+import adocaopets.dtos.adocao.ReprovacaoAdocaoDto;
+import adocaopets.dtos.adocao.SolicitacaoAdocaoDto;
 import adocaopets.models.Adocao;
 import adocaopets.models.Pet;
 import adocaopets.models.Tutor;
-import adocaopets.models.enums.StatusAdocao;
 import adocaopets.repositories.AdocaoRepository;
 import adocaopets.repositories.PetRepository;
 import adocaopets.repositories.TutorRepository;
 import adocaopets.validacoes.ValidacaoSolicitacaoAdocao;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 

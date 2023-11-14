@@ -1,14 +1,15 @@
 package adocaopets.controllers;
 
+import adocaopets.dtos.pet.PetDto;
 import adocaopets.models.Pet;
 import adocaopets.repositories.PetRepository;
+import adocaopets.services.PetService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -19,15 +20,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PetController {
 
-    private final PetRepository petRepository;
+    private final PetService petService;
 
     @GetMapping
-    public ResponseEntity<Page<Pet>> listarTodosDisponiveis(Pageable pageable) {
-        List<Pet> disponiveis = petRepository.findAll()
-                .stream()
-                .filter(pet -> !pet.getAdotado())
-                .collect(Collectors.toList());
+    public ResponseEntity<Page<PetDto>> listarTodosDisponiveis(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id,asc") String sort) {
 
-        return ResponseEntity.ok(new PageImpl<>(disponiveis, pageable, disponiveis.size()));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        Page<PetDto> pets = petService.buscarPetsDisponiveis(pageable);
+
+        return ResponseEntity.ok(pets);
     }
 }

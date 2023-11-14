@@ -1,17 +1,11 @@
 package adocaopets.validacoes;
 
-import adocaopets.dtos.SolicitacaoAdocaoDto;
+import adocaopets.dtos.adocao.SolicitacaoAdocaoDto;
 import adocaopets.exceptions.ValidacaoException;
-import adocaopets.models.Adocao;
-import adocaopets.models.Pet;
-import adocaopets.models.Tutor;
 import adocaopets.models.enums.StatusAdocao;
 import adocaopets.repositories.AdocaoRepository;
-import adocaopets.repositories.TutorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

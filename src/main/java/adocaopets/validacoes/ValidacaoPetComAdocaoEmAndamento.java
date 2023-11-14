@@ -1,6 +1,6 @@
 package adocaopets.validacoes;
 
-import adocaopets.dtos.SolicitacaoAdocaoDto;
+import adocaopets.dtos.adocao.SolicitacaoAdocaoDto;
 import adocaopets.exceptions.ValidacaoException;
 import adocaopets.models.enums.StatusAdocao;
 import adocaopets.repositories.AdocaoRepository;

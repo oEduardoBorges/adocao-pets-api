@@ -1,6 +1,6 @@
 package adocaopets.validacoes;
 
-import adocaopets.dtos.SolicitacaoAdocaoDto;
+import adocaopets.dtos.adocao.SolicitacaoAdocaoDto;
 
 public interface ValidacaoSolicitacaoAdocao {
 

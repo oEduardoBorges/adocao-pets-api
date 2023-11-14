@@ -1,5 +1,6 @@
 package adocaopets.models;
 
+import adocaopets.dtos.pet.CadastroPetDto;
 import adocaopets.models.enums.TipoPet;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
@@ -46,4 +47,15 @@ public class Pet {
 
     @OneToOne(mappedBy = "pet", fetch = FetchType.LAZY)
     private Adocao adocao;
+
+    public Pet(CadastroPetDto cadastroPetDto, Abrigo abrigo) {
+        this.tipo = cadastroPetDto.tipo();
+        this.nome = cadastroPetDto.nome();
+        this.raca = cadastroPetDto.raca();
+        this.idade = cadastroPetDto.idade();
+        this.cor = cadastroPetDto.cor();
+        this.peso = cadastroPetDto.peso();
+        this.abrigo = abrigo;
+        this.adotado = false;
+    }
 }

@@ -1,0 +1,52 @@
+package adocaopets.models;
+
+import adocaopets.models.enums.StatusAdocao;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode
+@Entity
+@Table(name = "adocoes")
+public class Adocao {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "data")
+    private LocalDateTime data;
+
+    @NotNull
+    @ManyToOne
+    @JsonBackReference("tutor_adocoes")
+    @JoinColumn(name = "tutor_id")
+    private Tutor tutor;
+
+    @NotNull
+    @OneToOne
+    @JoinColumn(name = "pet_id")
+    @JsonManagedReference("adocao_pets")
+    private Pet pet;
+
+    @NotBlank
+    @Column(name = "motivo")
+    private String motivo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StatusAdocao status;
+
+    @Column(name = "justificativa_status")
+    private String justificativaStatus;
+}

@@ -1,5 +1,6 @@
 package adocaopets.models;
 
+import adocaopets.dtos.abrigo.CadastroAbrigoDto;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -35,4 +36,10 @@ public class Abrigo {
 
     @OneToMany(mappedBy = "abrigo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Pet> pets;
+
+    public Abrigo(CadastroAbrigoDto cadastroAbrigoDto) {
+        this.nome = cadastroAbrigoDto.nome();
+        this.telefone = cadastroAbrigoDto.telefone();
+        this.email = cadastroAbrigoDto.email();
+    }
 }

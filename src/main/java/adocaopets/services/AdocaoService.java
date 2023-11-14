@@ -11,6 +11,7 @@ import adocaopets.models.enums.StatusAdocao;
 import adocaopets.repositories.AdocaoRepository;
 import adocaopets.repositories.PetRepository;
 import adocaopets.repositories.TutorRepository;
+import adocaopets.validacoes.ValidacaoSolicitacaoAdocao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
@@ -31,34 +32,13 @@ public class AdocaoService {
 
     private final EmailService emailService;
 
+    private final List<ValidacaoSolicitacaoAdocao> validacoes;
+
     public void solicitar(SolicitacaoAdocaoDto solicitacaoAdocaoDto) {
         Pet pet = petRepository.getReferenceById(solicitacaoAdocaoDto.idPet());
         Tutor tutor = tutorRepository.getReferenceById(solicitacaoAdocaoDto.idTutor());
 
-        if (pet.getAdotado() == true) {
-            throw new ValidacaoException("Pet já foi adotado!");
-        } else {
-            List<Adocao> adocoes = adocaoRepository.findAll();
-            for (Adocao a : adocoes) {
-                if (a.getTutor() == tutor && a.getStatus() == StatusAdocao.AGUARDANDO_AVALIACAO) {
-                    throw new ValidacaoException("Tutor aguardando outra avaliação para adoção!");
-                }
-            }
-            for (Adocao a : adocoes) {
-                if (a.getPet() == pet && a.getStatus() == StatusAdocao.AGUARDANDO_AVALIACAO) {
-                    throw new ValidacaoException("Pet está aguardando uma avaliação para ser adotado!");
-                }
-            }
-            for (Adocao a : adocoes) {
-                int contador = 0;
-                if (a.getTutor() == tutor && a.getStatus() == StatusAdocao.APROVADO) {
-                    contador = contador + 1;
-                }
-                if (contador == 5) {
-                    throw new ValidacaoException("Tutor chegou ao limite máximo de adoções: 5");
-                }
-            }
-        }
+        validacoes.forEach(validador -> validador.validar(solicitacaoAdocaoDto));
 
         Adocao adocao = new Adocao();
         adocao.setData(LocalDateTime.now());

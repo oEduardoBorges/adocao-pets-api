@@ -1,5 +1,8 @@
 package adocaopets.controllers;
 
+import adocaopets.dtos.AprovacaoAdocaoDto;
+import adocaopets.dtos.ReprovacaoAdocaoDto;
+import adocaopets.dtos.SolicitacaoAdocaoDto;
 import adocaopets.models.Adocao;
 import adocaopets.models.enums.StatusAdocao;
 import adocaopets.repositories.AdocaoRepository;
@@ -27,9 +30,9 @@ public class AdocaoController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<String> solicitar(@RequestBody @Valid Adocao adocao) {
+    public ResponseEntity<String> solicitar(@RequestBody @Valid SolicitacaoAdocaoDto solicitacaoAdocaoDto) {
         try {
-            this.adocaoService.solicitar(adocao);
+            this.adocaoService.solicitar(solicitacaoAdocaoDto);
             return ResponseEntity.status(HttpStatus.OK).body("Adoção solicitada com sucesso!");
         } catch(ValidationException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -38,15 +41,15 @@ public class AdocaoController {
 
     @PutMapping("/aprovar")
     @Transactional
-    public ResponseEntity<String> aprovar(@RequestBody @Valid Adocao adocao) {
-        this.adocaoService.aprovar(adocao);
+    public ResponseEntity<String> aprovar(@RequestBody @Valid AprovacaoAdocaoDto aprovacaoAdocaoDtoto) {
+        this.adocaoService.aprovar(aprovacaoAdocaoDtoto);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PutMapping("/reprovar")
     @Transactional
-    public ResponseEntity<String> reprovar(@RequestBody @Valid Adocao adocao) {
-        this.adocaoService.reprovar(adocao);
+    public ResponseEntity<String> reprovar(@RequestBody @Valid ReprovacaoAdocaoDto reprovacaoAdocaoDtoo) {
+        this.adocaoService.reprovar(reprovacaoAdocaoDtoo);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

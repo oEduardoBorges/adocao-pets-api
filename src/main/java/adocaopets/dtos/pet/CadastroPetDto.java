@@ -23,4 +23,8 @@ public record CadastroPetDto(
 
         @NotNull
         Float peso
-){}
+){
+        public CadastroPetDto {
+                if(nome != null) nome = nome.trim();
+        }
+}

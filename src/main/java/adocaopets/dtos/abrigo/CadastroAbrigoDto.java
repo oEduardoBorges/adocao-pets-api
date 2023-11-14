@@ -16,4 +16,8 @@ public record CadastroAbrigoDto(
         @NotBlank
         @Email
         String email
-){}
+){
+        public CadastroAbrigoDto {
+                if(nome != null) nome = nome.trim();
+        }
+}

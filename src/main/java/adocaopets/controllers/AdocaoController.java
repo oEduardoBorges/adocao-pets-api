@@ -4,6 +4,7 @@ import adocaopets.dtos.adocao.AprovacaoAdocaoDto;
 import adocaopets.dtos.adocao.ReprovacaoAdocaoDto;
 import adocaopets.dtos.adocao.SolicitacaoAdocaoDto;
 import adocaopets.services.AdocaoService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
@@ -33,14 +34,22 @@ public class AdocaoController {
     @PutMapping("/aprovar")
     @Transactional
     public ResponseEntity<String> aprovar(@RequestBody @Valid AprovacaoAdocaoDto aprovacaoAdocaoDtoto) {
-        this.adocaoService.aprovar(aprovacaoAdocaoDtoto);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        try {
+            this.adocaoService.aprovar(aprovacaoAdocaoDtoto);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch(EntityNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/reprovar")
     @Transactional
     public ResponseEntity<String> reprovar(@RequestBody @Valid ReprovacaoAdocaoDto reprovacaoAdocaoDtoo) {
-        this.adocaoService.reprovar(reprovacaoAdocaoDtoo);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        try {
+            this.adocaoService.reprovar(reprovacaoAdocaoDtoo);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch(EntityNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

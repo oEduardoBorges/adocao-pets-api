@@ -25,10 +25,9 @@ public class PetController {
     @GetMapping
     public ResponseEntity<Page<PetDto>> listarTodosDisponiveis(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id,asc") String sort) {
+            @RequestParam(defaultValue = "5") int size) {
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        Pageable pageable = PageRequest.of(page, size);
         Page<PetDto> pets = petService.buscarPetsDisponiveis(pageable);
 
         return ResponseEntity.ok(pets);

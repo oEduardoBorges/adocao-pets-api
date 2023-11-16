@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,7 @@ public class TutorController {
 
     private final TutorService tutorService;
 
+    @PreAuthorize("hasAnyRole('ADMIN)")
     @PostMapping
     @Transactional
     public ResponseEntity<String> cadastrar(@RequestBody @Valid CadastroTutorDto cadastroTutorDto) {
@@ -42,6 +44,7 @@ public class TutorController {
         return ResponseEntity.status(HttpStatus.OK).body(tutorService.listar(pageable));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN)")
     @PutMapping
     @Transactional
     public ResponseEntity<String> atualizar(@RequestBody @Valid AtualizacaoTutorDto atualizacaoTutorDto) {

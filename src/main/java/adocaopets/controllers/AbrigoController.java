@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +33,7 @@ public class AbrigoController {
 
     private final PetService petService;
 
+    @PreAuthorize("hasAnyRole('ADMIN)")
     @PostMapping
     @Transactional
     public ResponseEntity<String> cadastrar(@RequestBody @Valid CadastroAbrigoDto cadastroAbrigoDto) {
@@ -62,6 +64,7 @@ public class AbrigoController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN)")
     @PostMapping("/{idOuNome}/pets")
     @Transactional
     public ResponseEntity<String> cadastrarPet(@PathVariable String idOuNome, @RequestBody @Valid CadastroPetDto cadastroPetDto) {

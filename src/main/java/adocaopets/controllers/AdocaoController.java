@@ -10,6 +10,7 @@ import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,7 @@ public class AdocaoController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN)")
     @PutMapping("/aprovar")
     @Transactional
     public ResponseEntity<String> aprovar(@RequestBody @Valid AprovacaoAdocaoDto aprovacaoAdocaoDtoto) {
@@ -42,6 +44,7 @@ public class AdocaoController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN)")
     @PutMapping("/reprovar")
     @Transactional
     public ResponseEntity<String> reprovar(@RequestBody @Valid ReprovacaoAdocaoDto reprovacaoAdocaoDtoo) {

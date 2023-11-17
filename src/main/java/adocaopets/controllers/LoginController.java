@@ -19,11 +19,12 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping("/registro")
-    public ResponseEntity<Token> register(@RequestBody CadastroDto cadastroDto) {
-      return ResponseEntity.ok(loginService.register(cadastroDto));
+    public ResponseEntity<Token> registrar(@RequestBody CadastroDto cadastroDto) {
+      return ResponseEntity.ok(loginService.registrar(cadastroDto));
     }
+
     @PostMapping("/logar")
-    public ResponseEntity<Token> authenticate(@RequestBody UsuarioDto usuarioDto) {
-      return ResponseEntity.ok(loginService.authenticate(usuarioDto));
+    public ResponseEntity<Token> logar(@RequestBody UsuarioDto usuarioDto) {
+      return ResponseEntity.ok(loginService.logar(usuarioDto));
     }
 }

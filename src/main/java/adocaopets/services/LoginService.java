@@ -4,6 +4,7 @@ import adocaopets.config.security.JwtService;
 import adocaopets.dtos.login.CadastroDto;
 import adocaopets.dtos.login.Token;
 import adocaopets.dtos.login.UsuarioDto;
+import adocaopets.exceptions.ExcecaoDeViolacaoDeIntegridadeDeDados;
 import adocaopets.models.Usuario;
 import adocaopets.models.enums.Role;
 import adocaopets.repositories.UsuarioRepository;
@@ -12,6 +13,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,13 +25,14 @@ public class LoginService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public Token register(CadastroDto cadastroDto) {
+    public Token registrar(CadastroDto cadastroDto) {
         var usuario = Usuario.builder()
                 .nome(cadastroDto.nome())
                 .email(cadastroDto.email())
                 .senha(passwordEncoder.encode(cadastroDto.senha()))
                 .role(Role.USER)
                 .build();
+        validaPorCpfEEmail(cadastroDto);
         usuarioRepository.save(usuario);
         var jwtToken = jwtService.generateToken(usuario);
         return Token.builder()
@@ -36,7 +40,7 @@ public class LoginService {
                 .build();
     }
 
-    public Token authenticate(UsuarioDto usuarioDto) {
+    public Token logar(UsuarioDto usuarioDto) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         usuarioDto.email(),
@@ -49,5 +53,12 @@ public class LoginService {
         return Token.builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    private void validaPorCpfEEmail(CadastroDto cadastroDto) {
+        Optional<Usuario> cliente = usuarioRepository.findByEmail(cadastroDto.email());
+        if (cliente.isPresent() && cliente.get().getId() != cadastroDto.id()) {
+            throw new ExcecaoDeViolacaoDeIntegridadeDeDados("E-mail já cadastrado no sistema!");
+        }
     }
 }

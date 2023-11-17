@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 
 public record CadastroDto(
 
+        Long id,
+
         @NotBlank
         String nome,
 

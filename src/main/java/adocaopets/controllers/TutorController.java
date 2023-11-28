@@ -4,8 +4,6 @@ import adocaopets.dtos.tutor.AtualizacaoTutorDto;
 import adocaopets.dtos.tutor.CadastroTutorDto;
 import adocaopets.dtos.tutor.ListarTutoresDto;
 import adocaopets.exceptions.ValidacaoException;
-import adocaopets.models.Tutor;
-import adocaopets.repositories.TutorRepository;
 import adocaopets.services.TutorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/tutores")
@@ -42,6 +42,11 @@ public class TutorController {
                                                          @RequestParam(defaultValue = "5") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.status(HttpStatus.OK).body(tutorService.listar(pageable));
+    }
+
+    @GetMapping("/{id}")
+    public Optional<ListarTutoresDto> listarTutorPorId(@PathVariable Long id) {
+        return tutorService.listarTutorPorId(id);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN)")

@@ -3,6 +3,7 @@ package adocaopets.services;
 import adocaopets.dtos.tutor.AtualizacaoTutorDto;
 import adocaopets.dtos.tutor.CadastroTutorDto;
 import adocaopets.dtos.tutor.ListarTutoresDto;
+import adocaopets.exceptions.ExcecaoDeViolacaoDeIntegridadeDeDados;
 import adocaopets.exceptions.ValidacaoException;
 import adocaopets.models.Tutor;
 import adocaopets.repositories.TutorRepository;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,6 +41,11 @@ public class TutorService {
                 .collect(Collectors.toList());
 
         return new PageImpl<>(dto, pageable, tutorPage.getTotalElements());
+    }
+
+    public Optional<ListarTutoresDto> listarTutorPorId(Long id) {
+        return Optional.ofNullable(tutorRepository.findById(id).map(ListarTutoresDto::new).
+                orElseThrow(() -> new ExcecaoDeViolacaoDeIntegridadeDeDados("Tutor não encontrado")));
     }
 
     public void atualizar(AtualizacaoTutorDto atualizacaoTutorDto) {

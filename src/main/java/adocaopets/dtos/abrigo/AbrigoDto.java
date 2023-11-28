@@ -1,8 +1,9 @@
 package adocaopets.dtos.abrigo;
 
 import adocaopets.models.Abrigo;
+import lombok.Builder;
 
-
+@Builder
 public record AbrigoDto(
 
         Long id,

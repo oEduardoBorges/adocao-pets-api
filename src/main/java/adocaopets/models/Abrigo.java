@@ -1,5 +1,6 @@
 package adocaopets.models;
 
+import adocaopets.dtos.abrigo.AbrigoDto;
 import adocaopets.dtos.abrigo.CadastroAbrigoDto;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -9,6 +10,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,5 +43,11 @@ public class Abrigo {
         this.nome = cadastroAbrigoDto.nome();
         this.telefone = cadastroAbrigoDto.telefone();
         this.email = cadastroAbrigoDto.email();
+    }
+
+    public Abrigo(Optional<AbrigoDto> abrigo) {
+        this.nome = abrigo.get().nome();
+        this.telefone = abrigo.get().telefone();
+        this.email = abrigo.get().email();
     }
 }

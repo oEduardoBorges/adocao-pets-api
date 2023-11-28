@@ -2,9 +2,12 @@ package adocaopets.services;
 
 import adocaopets.dtos.abrigo.CadastroAbrigoDto;
 import adocaopets.dtos.abrigo.AbrigoDto;
+import adocaopets.dtos.login.CadastroDto;
 import adocaopets.dtos.pet.PetDto;
+import adocaopets.exceptions.ExcecaoDeViolacaoDeIntegridadeDeDados;
 import adocaopets.exceptions.ValidacaoException;
 import adocaopets.models.Abrigo;
+import adocaopets.models.Usuario;
 import adocaopets.repositories.AbrigoRepository;
 import adocaopets.repositories.PetRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +43,11 @@ public class AbrigoService {
                 .map(AbrigoDto::new);
     }
 
+    public Optional<AbrigoDto> listarAbrigoPorId(Long id) {
+        return Optional.ofNullable(abrigoRepository.findById(id).map(AbrigoDto::new).
+                orElseThrow(() -> new ExcecaoDeViolacaoDeIntegridadeDeDados("Abrigo não encontrado")));
+    }
+
     public List<PetDto> listarPetsDoAbrigo(String idOuNome) {
         Abrigo abrigo = carregarAbrigo(idOuNome);
 
@@ -60,5 +68,19 @@ public class AbrigoService {
         }
 
         return optional.orElseThrow(() -> new ValidacaoException("Abrigo não encontrado"));
+    }
+
+    public void atualizarAbrigo(Long id, CadastroAbrigoDto abrigoDto) {
+        Optional<Abrigo> optionalAbrigo = abrigoRepository.findById(id);
+
+        if (optionalAbrigo.isPresent()) {
+            Abrigo abrigo = optionalAbrigo.get();
+            abrigo.setNome(abrigoDto.nome());
+            abrigo.setTelefone(abrigoDto.telefone());
+            abrigo.setEmail(abrigoDto.email());
+            abrigoRepository.save(abrigo);
+        } else {
+            throw new ExcecaoDeViolacaoDeIntegridadeDeDados("Abrigo não encontrado.");
+        }
     }
 }

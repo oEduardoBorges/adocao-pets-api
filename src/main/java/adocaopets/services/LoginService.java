@@ -32,7 +32,7 @@ public class LoginService {
                 .senha(passwordEncoder.encode(cadastroDto.senha()))
                 .role(Role.USER)
                 .build();
-        validaPorCpfEEmail(cadastroDto);
+        validaPorEmail(cadastroDto);
         usuarioRepository.save(usuario);
         var jwtToken = jwtService.generateToken(usuario);
         return Token.builder()
@@ -55,7 +55,7 @@ public class LoginService {
                 .build();
     }
 
-    private void validaPorCpfEEmail(CadastroDto cadastroDto) {
+    private void validaPorEmail(CadastroDto cadastroDto) {
         Optional<Usuario> cliente = usuarioRepository.findByEmail(cadastroDto.email());
         if (cliente.isPresent() && cliente.get().getId() != cadastroDto.id()) {
             throw new ExcecaoDeViolacaoDeIntegridadeDeDados("E-mail já cadastrado no sistema!");

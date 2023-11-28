@@ -6,23 +6,22 @@ import adocaopets.dtos.pet.CadastroPetDto;
 import adocaopets.dtos.pet.PetDto;
 import adocaopets.exceptions.ValidacaoException;
 import adocaopets.models.Abrigo;
-import adocaopets.models.Pet;
-import adocaopets.repositories.AbrigoRepository;
 import adocaopets.services.AbrigoService;
 import adocaopets.services.PetService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/abrigos")
@@ -52,6 +51,17 @@ public class AbrigoController {
         Pageable pageable = PageRequest.of(page, size);
         Page<AbrigoDto> abrigos = abrigoService.listar(pageable);
         return ResponseEntity.ok(abrigos);
+    }
+
+    @GetMapping("/{id}")
+    public Optional<AbrigoDto> listarAbrigoPorId(@PathVariable Long id) {
+        return abrigoService.listarAbrigoPorId(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> atualizarAbrigo(@PathVariable Long id, @Valid @RequestBody CadastroAbrigoDto abrigoDto) {
+        abrigoService.atualizarAbrigo(id, abrigoDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("/{idOuNome}/pets")

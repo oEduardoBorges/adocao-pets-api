@@ -50,7 +50,7 @@ public class TutorController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN)")
-    @PutMapping
+    @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<String> atualizar(@RequestBody @Valid AtualizacaoTutorDto atualizacaoTutorDto) {
         try {

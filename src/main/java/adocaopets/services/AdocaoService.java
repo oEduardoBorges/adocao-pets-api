@@ -1,6 +1,7 @@
 package adocaopets.services;
 
 import adocaopets.dtos.adocao.AprovacaoAdocaoDto;
+import adocaopets.dtos.adocao.ListaDeAdocoesDto;
 import adocaopets.dtos.adocao.ReprovacaoAdocaoDto;
 import adocaopets.dtos.adocao.SolicitacaoAdocaoDto;
 import adocaopets.models.Adocao;
@@ -11,6 +12,8 @@ import adocaopets.repositories.PetRepository;
 import adocaopets.repositories.TutorRepository;
 import adocaopets.validacoes.ValidacaoSolicitacaoAdocao;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
@@ -29,6 +32,11 @@ public class AdocaoService {
     private final EmailService emailService;
 
     private final List<ValidacaoSolicitacaoAdocao> validacoes;
+
+    public Page<ListaDeAdocoesDto> listaDeAdocoes(Pageable pageable) {
+        return adocaoRepository.findAll(pageable)
+                .map(ListaDeAdocoesDto::new);
+    }
 
     public void solicitar(SolicitacaoAdocaoDto solicitacaoAdocaoDto) {
         Pet pet = petRepository.getReferenceById(solicitacaoAdocaoDto.idPet());

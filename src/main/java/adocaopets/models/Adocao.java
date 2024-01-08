@@ -51,7 +51,7 @@ public class Adocao {
     }
 
     public void marcarComoReprovada(String justificativa) {
-        this.status = StatusAdocao.APROVADO;
+        this.status = StatusAdocao.REPROVADO;
         this.justificativaStatus = justificativa;
     }
 }
